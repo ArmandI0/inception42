@@ -1,0 +1,9 @@
+versiom : '3'
+
+services:
+
+  MariaDB:
+    image: mariaDB:11.0
+    volumes:
+      - db_data:/home/aranger42/data
+    restart: always
