@@ -1,0 +1,9 @@
+
+[mysqld]
+
+user            = mysql
+port            = 3306              #port to comunicate with db
+bind-address    =*                  #Allowed all IP
+datadir         = /var/lib/mysql    #Db location
+socket          = /run/mysqld/mysqld.sock
+
