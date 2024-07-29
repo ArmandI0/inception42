@@ -8,6 +8,4 @@ COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
 COPY script.sh .
 
 RUN chmod +x script.sh
-CMD ./script.sh
-
-#RUN mysql -e ${SQL_DATABASE};
+CMD ["./script.sh"]

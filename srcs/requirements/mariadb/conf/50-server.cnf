@@ -1,7 +1,7 @@
 
 [mysqld]
 
-user            = mysql
+user            = root
 port            = 3306              #port to comunicate with db
 bind-address    =*                  #Allowed all IP
 datadir         = /var/lib/mysql    #Db location

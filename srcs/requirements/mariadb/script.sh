@@ -1,14 +1,12 @@
 #!/bin/bash
 
 
-#variable d'environement a rajouter dans le .env
+service mariadb start
 
 SQL_USER="aranger42"
 SQL_PASSWORD="0000"
 SQL_DATABASE="newdb"
 SQL_ROOT_PASSWORD="ademine"
-
-service mariadb start
 
 sleep 10
 
