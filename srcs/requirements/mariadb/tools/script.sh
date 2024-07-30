@@ -1,16 +1,9 @@
 #!/bin/bash
 
-service mariadb start
-
 echo "Starting script.sh..."
 
 # Vérifier les variables d'environnement
-echo "SQL_USER: ${SQL_USER}"
-echo "SQL_PASSWORD: ${SQL_PASSWORD}"
-echo "SQL_DATABASE: ${SQL_DATABASE}"
-echo "SQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD}"
-
-echo "Starting MariaDB service..."
+mariadbd --user=mysql
 
 sleep 10
 
@@ -33,4 +26,4 @@ mysql -u root -p"${SQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 mysqladmin -u root -p"${SQL_ROOT_PASSWORD}" shutdown
 
 # Démarrer mysql en mode sécurisé
-exec mariadb
+exec mariadbd
