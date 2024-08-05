@@ -1,12 +1,20 @@
 FROM debian:bullseye
 
+# Installer MariaDB
 RUN apt update && apt install -y mariadb-server
-RUN chown -R mysql:mysql /var/lib/mysql/
 
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY tools/script.sh .
-RUN chmod +x script.sh
+# Configurer les permissions
+RUN chown -R mysql:mysql /var/lib/mysql/ /run/mysqld
 
-RUN mkdir /run/mysqld && chown -R mysql:mysql /run/mysqld
+# Copier les fichiers de configuration
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-CMD ["./script.sh"]
+# Copier le script de démarrage
+COPY tools/script.sh /usr/local/bin/script.sh
+RUN chmod +x /usr/local/bin/script.sh
+
+# Exposer le port MariaDB
+EXPOSE 3306
+
+# Utiliser le script comme point d'entrée
+ENTRYPOINT ["/usr/local/bin/script.sh"]
