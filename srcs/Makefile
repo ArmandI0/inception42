@@ -7,7 +7,7 @@ down:
 	@docker network prune -f
 
 delete:
-	@rm -rf /home/aranger42/data/mariadb/*
-	@rm -rf /home/aranger42/data/wordpress/*
+	@sudo rm -rf /home/aranger42/data/mariadb/*
+	@sudo rm -rf /home/aranger42/data/wordpress/*
 stop:
 	@docker compose -f docker-compose.yml stop
