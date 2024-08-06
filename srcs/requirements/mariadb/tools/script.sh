@@ -1,43 +1,33 @@
 #!/bin/bash
 
-# Démarrer MariaDB
-service mariadb start
+# Démarrer MariaDB en mode sécurisé
+mysqld_safe --datadir='/var/lib/mysql' &
 
-# Garder le conteneur en fonctionnement
-tail -f /var/log/mysql/error.log
+# Attendre que MariaDB démarre complètement
+until mysqladmin ping --silent; do
+    echo "En attente du démarrage de MariaDB..."
+    sleep 2
+done
 
-# Démarrer MariaDB
-# mariadbd
-# mariadbd --user=mysql &
+echo "MariaDB démarré avec succès."
 
-# # Attendre que MariaDB soit prêt
-# echo "Waiting for MariaDB to start..."
-# sleep 30 # Augmenter le délai si nécessaire, ou utilisez une vérification plus robuste
+# Créer la base de données si elle n'existe pas déjà
+mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 
-# # Vérifier si MariaDB est démarré
-# mysqladmin ping -h127.0.0.1 --silent
-# if [ $? -ne 0 ]; then
-#   echo "MariaDB is not available. Exiting script."
-#   exit 1
-# fi
+# Créer un utilisateur si il n'existe pas déjà et lui attribuer un mot de passe
+mysql -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
 
-# # Créer la base de données si elle n'existe pas déjà
-# mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
+# Accorder tous les privilèges sur la base de données à l'utilisateur
+mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO '${SQL_USER}'@'%' WITH GRANT OPTION;"
 
-# # Créer un utilisateur si il n'existe pas déjà et lui attribuer un mot de passe
-# mysql -u root -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
+# Modifier le mot de passe de l'utilisateur root
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 
-# # Accorder tous les privilèges sur la base de données à l'utilisateur
-# mysql -u root -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO '${SQL_USER}'@'%' WITH GRANT OPTION;"
+# Rafraîchir les privilèges pour prendre en compte les modifications
+mysql -u root -p"${SQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 
-# # Modifier le mot de passe de l'utilisateur root
-# mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
+mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
-# # Rafraîchir les privilèges pour prendre en compte les modifications
-# mysql -u root -p"${SQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
+echo "Configuration terminée."
 
-# # Arrêter le service mysql (ceci peut ne pas être nécessaire)
-# # mysqladmin -u root -p"${SQL_ROOT_PASSWORD}" shutdown
-
-# # Démarrer MariaDB en premier plan
-# exec mariadbd
+exec mariadbd

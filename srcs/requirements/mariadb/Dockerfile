@@ -1,9 +1,10 @@
 FROM debian:bullseye
 
 # Installer MariaDB
-RUN apt update && apt install -y mariadb-server
+RUN apt update && apt install -y mariadb-server systemd
 
 # Configurer les permissions
+RUN mkdir -p /run/mysqld
 RUN chown -R mysql:mysql /var/lib/mysql/ /run/mysqld
 
 # Copier les fichiers de configuration
@@ -17,4 +18,4 @@ RUN chmod +x /usr/local/bin/script.sh
 EXPOSE 3306
 
 # Utiliser le script comme point d'entrée
-ENTRYPOINT ["/usr/local/bin/script.sh"]
+CMD ["/usr/local/bin/script.sh"]
