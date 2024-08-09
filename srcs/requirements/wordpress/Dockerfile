@@ -24,4 +24,4 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 RUN touch /var/run/php/php7.4-fpm.pid && \
     chown www-data:www-data /var/run/php/php7.4-fpm.pid
 
-ENTRYPOINT ["./auto_config.sh"]
+CMD ["./auto_config.sh"]
