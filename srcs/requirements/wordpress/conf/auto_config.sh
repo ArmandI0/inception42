@@ -15,4 +15,8 @@ else
   echo "wp-config.php already exists."
 fi
 
+echo "avant"
+
 php-fpm7.4 -F
+
+echo "php-fpm7.4 launched"

@@ -20,4 +20,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
+# Ajuster les permissions du fichier PID de PHP-FPM
+RUN touch /var/run/php/php7.4-fpm.pid && \
+    chown www-data:www-data /var/run/php/php7.4-fpm.pid
+
 ENTRYPOINT ["./auto_config.sh"]
