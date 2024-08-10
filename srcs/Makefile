@@ -11,3 +11,20 @@ delete:
 	@sudo rm -rf /home/aranger42/data/wordpress/*
 stop:
 	@docker compose -f docker-compose.yml stop
+
+status:
+	@echo "\nDOCKER STATUS:\n"
+	# list all containers:
+	docker ps
+	@echo "\n"
+	# list all the containers available locally:
+	docker ps -a
+	@echo "\n"
+	# list images:
+	docker images
+	@echo "\n"
+	# list all volumes:
+	docker volume ls
+	@echo "\n"
+	# list all networks:
+	docker network ls
