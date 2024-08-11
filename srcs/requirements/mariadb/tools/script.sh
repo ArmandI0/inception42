@@ -1,23 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 
-# Vérifier si la base de données existe
-DB_EXISTS=$(mysql -u root -p${SQL_ROOT_PASSWORD} -e "SHOW DATABASES LIKE '${SQL_DATABASE}';" | grep ${SQL_DATABASE} > /dev/null; echo "$?")
 
-if [ $DB_EXISTS -eq 0 ]; then
-    echo "La base de données ${SQL_DATABASE} existe déjà."
-else
+if [ ! -d "/var/lib/mysql/$SQL_DATABASE" ]; then
+
     echo "La base de données ${SQL_DATABASE} n'existe pas. Configuration en cours..."
-    
-    # Démarrer MariaDB en mode sécurisé
+
     mysqld_safe --datadir='/var/lib/mysql' &
 
-    until mysqladmin ping -h "127.0.0.1" --silent; do
-      echo "Attente que MariaDB soit prêt..."
-      sleep 2
-    done
+    sleep 10
 
-    echo "MariaDB démarré avec succès."
-    
     # Créer la base de données si elle n'existe pas déjà
     mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 
@@ -37,7 +28,11 @@ else
     mysqladmin -u root -p"${SQL_ROOT_PASSWORD}" shutdown
 
     echo "Configuration terminée."
+
+else  
+    echo "Database already created"
 fi
 
 # Redémarrer MariaDB normalement
 exec mariadbd
+echo "MariaDB démarré avec succès."
