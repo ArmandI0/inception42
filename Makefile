@@ -1,7 +1,11 @@
 all:
-	@docker compose up --build
+	mkdir -p /home/aranger42/data
+	mkdir -p /home/aranger42/data/mariadb
+	mkdir -p /home/aranger42/data/wordpress
+	@docker compose -f ./srcs/docker-compose.yml up --build
+
 down:
-	@docker compose -f docker-compose.yml down
+	@docker compose -f ./srcs/docker-compose.yml down
 	@docker system prune -a -f
 	@docker volume prune -f
 	@docker network prune -f
@@ -9,8 +13,9 @@ down:
 delete:
 	@sudo rm -rf /home/aranger42/data/mariadb/*
 	@sudo rm -rf /home/aranger42/data/wordpress/*
+
 stop:
-	@docker compose -f docker-compose.yml stop
+	@docker compose -f ./srcs/docker-compose.yml stop
 
 status:
 	@echo "\nDOCKER STATUS:\n"

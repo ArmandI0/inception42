@@ -8,10 +8,10 @@ RUN apt-get install -y php7.4-fpm php7.4-mysqli curl iputils-ping
 RUN mkdir -p /run/php
 RUN chown -R www-data:www-data /run/php
 
-COPY /conf/auto_config.sh  .
+COPY /conf/wp-config.sh  .
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
 
-RUN chmod +x auto_config.sh
+RUN chmod +x wp-config.sh
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN chmod +x wp-cli.phar
@@ -21,4 +21,4 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 RUN touch /var/run/php/php7.4-fpm.pid && \
     chown www-data:www-data /var/run/php/php7.4-fpm.pid
 
-CMD ["./auto_config.sh"]
+ENTRYPOINT ["./wp-config.sh"]

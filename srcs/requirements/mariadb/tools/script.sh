@@ -3,7 +3,7 @@
 
 if [ ! -d "/var/lib/mysql/$SQL_DATABASE" ]; then
 
-    echo "La base de données ${SQL_DATABASE} n'existe pas. Configuration en cours..."
+    echo "The database ${SQL_DATABASE} does not exist. Configuring..."
 
     mysqld_safe --datadir='/var/lib/mysql' &
 
@@ -27,7 +27,7 @@ if [ ! -d "/var/lib/mysql/$SQL_DATABASE" ]; then
     # Arrêter MariaDB après la configuration
     mysqladmin -u root -p"${SQL_ROOT_PASSWORD}" shutdown
 
-    echo "Configuration terminée."
+    echo "SQL config done"
 
 else  
     echo "Database already created"
@@ -35,4 +35,3 @@ fi
 
 # Redémarrer MariaDB normalement
 exec mariadbd
-echo "MariaDB démarré avec succès."

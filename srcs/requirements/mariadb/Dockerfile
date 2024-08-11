@@ -18,4 +18,4 @@ RUN chmod +x /usr/local/bin/script.sh
 EXPOSE 3306
 
 # Utiliser le script comme point d'entrée
-CMD ["/usr/local/bin/script.sh"]
+ENTRYPOINT ["/usr/local/bin/script.sh"]

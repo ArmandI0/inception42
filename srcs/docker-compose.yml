@@ -10,7 +10,7 @@ services:
     env_file: .env
     volumes:
       - mariadb:/var/lib/mysql
-    # restart: unless-stopped
+    restart: unless-stopped
     expose:
       - "3306"
 
@@ -28,7 +28,7 @@ services:
       - wordpress
     ports:
       - "443:443"
-    # restart: on-failure
+    restart: on-failure
 
   wordpress:
     container_name: wordpress
@@ -42,7 +42,7 @@ services:
       - wordpress:/var/www/wordpress
     depends_on:
       - mariadb
-    # restart: on-failure
+    restart: on-failure
     expose: 
       - "9000"
 
@@ -53,6 +53,7 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '/home/aranger42/data/wordpress'
+
   mariadb:
     driver: local
     driver_opts:
